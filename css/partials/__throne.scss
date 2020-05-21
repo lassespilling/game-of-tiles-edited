@@ -1,0 +1,188 @@
+.throne {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background: black;
+    perspective: 100vh;
+    -webkit-perspective: 100vh;
+    pointer-events: none;
+    &__taker {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 25vh;
+        height: 25vh;
+        display: grid;
+        align-content: center;
+        &:before {
+            @include housesType();
+            content: "\e907";
+            color: white;
+            text-align: center;
+            font-size: 10rem;
+            width: 100%;
+            height: 100%;
+            margin: auto;
+            display: grid;
+            align-content: center;
+        }
+        will-change: transform;
+        transform: translate(-50%, 100vh) scale(2);
+        @include transition(all 2s ease);
+        @include timing();
+        display: block;
+        z-index: 1;
+    }
+    &__seat {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        filter: brightness(0%);
+        height: 100vh;
+        will-change: filter, transform;
+        transform: translate(-50%, -45vh) scale(0.15);
+    }
+    & .throne__particles {
+        content: "";
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        mix-blend-mode: lighten;
+        top: 0;
+        left: 0;
+        will-change: opacity, transform;
+        z-index: -1;
+        filter: saturate(150%) brightness(1.5);
+        opacity: 0;
+        background: url("../img/throne/throne-particles.gif") center center / cover
+            no-repeat;
+        @include sm {
+            background: url("../img/throne/throne-particles.gif") center center /
+                contain no-repeat;
+        }
+        transform: translateZ(0);
+    }
+    &:before {
+        content: "";
+        position: fixed;
+        width: 200vw;
+        height: 200vh;
+        top: 50%;
+        left: 50%;
+        will-change: filter, transform;
+        z-index: -1;
+        filter: brightness(0%);
+        background: url("../img/throne/throne.jpg") center center / cover no-repeat;
+        transform: translate(-50%,-50%) scale(.5);
+        transform-origin: center;
+    }
+    &--empty {
+        opacity: 0;
+        will-change: opacity;
+    }
+    &--taken {
+        opacity: 1;
+        @include transition(opacity 1s ease);
+        &:before {
+            // bg
+            filter: brightness(100%);
+            @include transition(transform 3s ease, filter 5s ease 2s);
+            @include animation(fadeInBg 4s 1 forwards, fadeOutSlow 70s ease 1 forwards 5s);
+            @include timing();
+            @include keyframes(fadeInBg) {
+                0% {
+                    transform: translate(-50%,-50%) scale(.5);
+                }
+                70% {
+                    transform: translate(-50%,-55%) scale(1);
+                }
+                100% {
+                    transform: translate(-50%,-54%) scale(.9);
+                }
+            }
+            @include keyframes(fadeOutSlow) {
+                0% {
+                    transform: translate(-50%,-54%) scale(.9);
+                    filter: brightness(100%);
+                }
+                100% {
+                    transform: translate(-50%,-50%) scale(.5);
+                    filter: brightness(80%);
+                }
+            }
+        }
+
+        & .throne__particles {
+            // bg
+            transform: translateZ(50vh);
+            transform-origin: bottom;
+            opacity: 0.8;
+            filter: saturate(80%) brightness(1);
+            @include transition(opacity 1s ease, transform 3s ease, filter 4s ease);
+            @include animation(fadeOutLights 4s 1 forwards 1s);
+        }
+        & .throne__taker {
+            @include animation(takerScale 4s ease forwards 1, slowScaleTaker 60s ease 1 forwards 5s);
+            @include keyframes(takerScale) {
+                0% {
+                    transform: translate(-50%, 100vh) scale(4);
+                }
+                40% {
+                    transform: translate(-50%, -3vh) scale(.7);
+                }
+                80% {
+                    transform: translate(-50%, -3vh) scale(.7);
+                }
+                100% {
+                    transform: translate(-50%, -3vh) scale(.65);
+                    opacity: 1;
+                }
+            }
+            @include keyframes(slowScaleTaker) {
+                0% {
+                    transform: translate(-50%, -3vh) scale(.65);
+                    filter: brightness(100%);
+                }
+                100% {
+                    transform: translate(-50%, -6vh) scale(.2);
+                    filter: brightness(60%);
+                }
+            }
+            @include transition(all 2s ease .5s);
+            @include timing();
+        }
+        & .throne__seat {
+            opacity: 1;
+            filter: brightness(100%);
+            @include animation(throneScale 4s ease 1 forwards, slowScaleSeat 60s ease 1 forwards 5s);
+            @include keyframes(throneScale) {
+                0% {
+                    transform: translate(-50%, -45vh) scale(0.15);
+                }
+                70% {
+                    transform: translate(-50%, -40vh) scale(0.5);
+                }
+                100% {
+                    transform: translate(-50%, -40vh) scale(0.45);
+                }
+            }
+            @include keyframes(slowScaleSeat) {
+                0% {
+                    transform: translate(-50%, -40vh) scale(0.45);
+                    filter: brightness(100%);
+                }
+                100% {
+                    transform: translate(-50%, -45vh) scale(0.15);
+                    filter: brightness(80%);
+                }
+            }
+            @include transition(filter 2s ease, transform 3s ease);
+            @include timing();
+        }
+    }
+}
+@include keyframes(fadeOutLights) {
+}

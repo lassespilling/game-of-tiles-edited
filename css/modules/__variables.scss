@@ -1,0 +1,57 @@
+/* Global variables (used across stylesheets)
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+// * COLORS
+// Player specific
+$p1Position: t1; // Start tile
+$p2Position: t1; // Start tile
+
+// Cards
+$color--cards: #b78a48;
+
+// Houses
+$color--stark: #afcec3;
+$color--mormont: #83d6a0;
+$color--greyjoy: #9999ff;
+$color--dondarrion: #c12ee5;
+$color--dayne: #ad87c6;
+$color--bolton: #d35f83;
+$color--martell: #f0852d;
+$color--targaryen: #d22721;
+$color--baratheon: #ffd000;
+$color--baelish: #7b915c;
+
+// Tiles - traps
+$color--nightking: cyan;
+$color--melisandre: magenta;
+
+// Typography
+$headingsType: "got";
+$bodyType: "IM Fell English";
+$uiType: "IM Fell English";
+$housesType: "houses" !important;
+
+// Buttons
+$play: green;
+
+// Tiles - start
+$start: rgb(79.2%, 100%, 96%);
+
+// Tiles - goal
+$throne: silver;
+
+/* Characters page (only used in characters partial)
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+$cardHeightValue: 30;
+$cardMarginValue: 2;
+$cardSpacing: 0.5rem;
+$cardMargin: $cardMarginValue + vh;
+$cardHeight: $cardHeightValue - $cardMarginValue + vh;
+$cardWidth: $cardHeightValue / 1.4 + vw;
+$cardMenuHeight: 70vh - ($cardHeightValue * 2) - ($cardMarginValue);
+
+/* Board page (only used in board partial)
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+$tileHeight: 50px;
+$dice-size: 3rem;
+$dice-perspective: 15rem;
+$dice-transition: 0.5s;

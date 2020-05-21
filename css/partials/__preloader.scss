@@ -1,0 +1,41 @@
+.preloader {
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    position: fixed;
+    opacity: 1;
+    background: black;
+    display: grid;
+    align-content: center;
+    @include transition(all 0.5s ease 0.8s);
+    &:before {
+        content: "Loading..";
+        position: fixed;
+        text-align: center;
+        top: 50%;
+        transform: translateY(-50%) scale(0.8);
+        left: 0;
+        right: 0;
+        margin: auto;
+        font-size: 2rem;
+        width: 5rem;
+        transform-origin: center;
+        display: inline-block;
+        color: white;
+        z-index: 1;
+        opacity: 1;
+        @include transition(all 0.3s ease 0.5s);
+        @include animation(pulse 1s ease forwards infinite);
+        @include keyframes(pulse) {
+            0% {
+                transform: translateY(-50%);
+            }
+            50% {
+                transform: translateY(-30%);
+            }
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+    }
+}

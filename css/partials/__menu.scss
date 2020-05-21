@@ -1,0 +1,45 @@
+.sound {
+    position: fixed;
+    top: 0;
+    right: 0;
+    color: white;
+    z-index: 2000;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    @include sm {
+        display: none;
+    }
+    &--hidden {
+        opacity: 0;
+        @include transition(all 0.2s ease);
+    }
+    &__sfx,
+    &__music {
+        // buttons
+        margin: 0.1rem;
+        padding-left: 0;
+        padding-right: 0;
+        border: 0;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    &__sfx {
+        &--disabled {
+            text-decoration: line-through;
+            border-color: grey;
+            color: grey;
+            &:hover {
+                transform: none;
+            }
+        }
+    }
+    &__music {
+        &--disabled {
+            text-decoration: line-through;
+            border-color: grey;
+            color: grey;
+            &:hover {
+                transform: none;
+            }
+        }
+    }
+}

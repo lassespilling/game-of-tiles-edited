@@ -1,0 +1,157 @@
+/* Results page
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.results {
+    color: tint($color--cards, 80%);
+    mix-blend-mode: hard-light;
+    // background: url("../img/throne/throne.jpg") center center / cover no-repeat;
+    background-color: #383131;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-height: 100vh;
+    z-index: 1005;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "quote quote"
+        "loser winner"
+        "menu menu";
+    &--notready {
+        opacity: 0;
+        height: 100vh;
+        pointer-events: none;
+        transform: scale(0.9);
+        @include transition(all 0.5s ease);
+        @include timing();
+    }
+    &--ready {
+        opacity: 1;
+        height: auto;
+        pointer-events: all;
+        transform: scale(1);
+        @include transition(all 0.5s ease);
+        @include timing();
+    }
+    &__box {
+        padding: 2rem;
+    }
+    &__quote {
+        grid-area: quote;
+        text-align: center;
+        display: grid;
+        padding: 2rem;
+        margin: 0;
+        &--text {
+            font-weight: bold;
+            font-style: italic;
+            font-size: 1.5rem;
+            display: grid;
+            align-content: center;
+        }
+        &--name {
+            grid-row-start: 2;
+            display: grid;
+            align-content: center;
+        }
+    }
+    &__winner {
+        grid-area: winner;
+    }
+    &__loser {
+        grid-area: loser;
+    }
+    &__menu {
+        grid-area: menu;
+        display: grid;
+        grid-template-rows: 0;
+        grid-gap: 1rem;
+        padding: 0 1rem 1rem 1rem;
+        align-items: stretch;
+        & .btn {
+            margin: 0;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.3);
+        }
+        & * {
+            grid-row-start: 2;
+        }
+    }
+    &--p1,
+    &--p2 {
+        &:before {
+            font-family: "houses" !important;
+            position: absolute;
+            content: " ";
+            font-size: 5rem;
+            text-align: center;
+            z-index: -1;
+            height: 100vh;
+            pointer-events: none;
+            -webkit-text-stroke-width: 1px;
+            color: transparent;
+            display: grid;
+            align-content: start;
+            top: 13vh;
+            color: rgba(255, 255, 255, 0.33);
+        }
+    }
+    &--p2 {
+        &:before {
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+        }
+    }
+}
+#resultsWinner {
+    & h2 {
+        text-align: right;
+    }
+    &:before {
+        text-align: left;
+        right: 2rem;
+    }
+}
+#resultsLoser {
+    &:before {
+        text-align: left;
+    }
+}
+#highscoreWinner,
+#highscoreLoser {
+    max-width: 250px;
+}
+#highscoreWinner {
+    margin-left: auto;
+}
+#highscoreLoser {
+    margin-right: auto;
+}
+.highscore {
+    &__row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        font-family: monospace;
+        margin: 0;
+    }
+    &__label {
+        padding: 0.5rem;
+        border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+    }
+    &__data {
+        padding: 0.5rem;
+        font-weight: bold;
+        text-align: right;
+        border-left: 1px dotted rgba(0, 0, 0, 0.3);
+        border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+    }
+    &--p1 {
+        & span {
+        }
+    }
+    &--p2 {
+        & span {
+        }
+    }
+}

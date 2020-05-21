@@ -1,0 +1,138 @@
+// Buttons
+.btn {
+    padding: 0.5rem 1rem;
+    outline: 0;
+    -webkit-user-select: none; /* Chrome all / Safari all */
+    -moz-user-select: none; /* Firefox all */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Likely future */
+    font-weight: bold;
+    background: transparent;
+    border: 0.1rem solid shade($color--cards, 50%);
+    border-radius: 0.5rem;
+    text-align: center;
+    @include displayType(0.7rem);
+    display: grid;
+    align-content: center;
+    margin: auto;
+    cursor: pointer;
+    transform: scale(1);
+    @include transition(all 0.2s ease);
+    will-change: transform;
+    &:hover {
+        transform: scale(1.05);
+    }
+    &--1,
+    &--2 {
+        background: transparent;
+    }
+    &--both {
+        border: 0;
+        overflow: hidden;
+        & span {
+            z-index: 1;
+        }
+        &:before {
+            content: "";
+            position: absolute;
+            border-radius: 0.5rem;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: -1;
+            height: 100%;
+        }
+        &:after {
+            content: "";
+            position: absolute;
+            border-radius: 0.5rem;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            z-index: -1;
+            height: 100%;
+        }
+    }
+    &--hover {
+        // general hover styling for buttons
+        cursor: pointer;
+        transform: scale(1);
+        @include transition(all 0.2s ease);
+        will-change: transform;
+        &:hover {
+            transform: scale(1.05);
+            @include transition(all 0.2s ease);
+        }
+    }
+    &--play {
+        background: $play;
+        border-color: $play;
+        color: white;
+        &:hover {
+            background: tint($play, 50%);
+        }
+    }
+    &--close {
+        background: shade($color--cards, 50%);
+        color: white;
+        &:hover {
+            background: shade($color--cards, 10%);
+        }
+    }
+    &--roll {
+        background: black; // Dice dots color
+        color: white;
+        border: 0;
+        @include uiType();
+        &[data-player="1"] {
+            color: white;
+            background: transparent;
+            & span {
+                padding-top: 5vh;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1.5rem;
+                line-height: 0.75rem;
+                font-size: 1rem;
+                display: inline-block;
+                &:before {
+                    content: "Press anywhere to ";
+                }
+            }
+            border-width: 0.5rem;
+            border-radius: 0;
+            margin: 0;
+            &:hover {
+                transform: none;
+            }
+        }
+        &[data-player="2"] {
+            color: white;
+            background: transparent;
+            & span {
+                padding-top: 5vh;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1.5rem;
+                line-height: 0.75rem;
+                font-size: 1rem;
+                display: inline-block;
+                &:before {
+                    content: "Press anywhere to ";
+                }
+            }
+            border-width: 0.5rem;
+            border-radius: 0;
+            margin: 0;
+            &:hover {
+                transform: none;
+            }
+        }
+    }
+    &--retry {
+    }
+}

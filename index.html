@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- METATAGS -->
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta name="keywords" content="" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="Game of Tiles Board Game">
+    <meta property="og:description" content="A Game of Tiles board game, based on the GOT cinematic universe.">
+    <meta property="og:image" content="img/socialmedia.jpg">
+    <meta property="og:url" content="https://lasse.media/frontend/semester-project-2/">
+
+    <link rel="icon" type="image/png" href="https://lasse.media/www/images/favicons/favicon-196x196.png" sizes="196x196">
+    <title>Game of Tiles</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css?v=14" />
+</head>
+
+<body>
+    <audio id="theme" preload="none">
+        <source src="" type="audio/mpeg" />
+    </audio>
+    <audio id="sfx" preload="none">
+        <source src="" type="audio/mpeg" />
+    </audio>
+    <audio id="voice" preload="none">
+        <source src="" type="audio/mpeg" />
+    </audio>
+    <div id="preloader" class="preloader"></div>
+    <div id="loadPage" style="opacity: 0;"> 
+        <div id="sfxMenu" class="sound"><i id="sfxToggle" class="btn btn--sfx sound__sfx">Sfx</i><i id="musicToggle" class="btn btn--sfx sound__music">Music</i></div>
+
+        <div id="cpuModal" class="modal modal--open modal--onecol t-center modal--welcome">
+            <div class="modal__box">
+                <div class="modal__content">
+                    <h1 class="modal__h1">Choose how to play</h1>
+                    <div class="modal__range modal__range--playstyle">
+                        <input type="range" min="1" max="2" value="1" class="cpu" id="cpuRange">
+                        <div id="cpuValue"></div>
+                    </div>
+                    <a class="btn btn--sfx" data-modal-close="cpuModal"> Start your Adventure</a>
+                </div>
+            </div>
+        </div>
+        <div id="difficultyModal" class="modal modal--open modal--onecol t-center modal--welcome">
+            <div class="modal__box">
+                <div class="modal__content">
+                    <h1 class="modal__h1">Difficulty</h1>
+                    <div class="modal__range modal__range--difficulty">
+                        <!-- <select class="sm-show" id="difficultySelect">
+                            <option value="1">Childlike</option>
+                            <option value="2" selected="selected">Normal</option>
+                            <option value="3">Hard</option>
+                            <option value="4">Insane</option>
+                        </select> -->
+                        <input type="range" min="1" max="4" value="2" class="difficulty" id="difficultyRange">
+                        <div id="difficultyValue"></div>
+                    </div>
+                    <a class="btn btn--sfx" data-modal-close="difficultyModal" id="difficultyConfirm"> Confirm</a>
+                </div>
+            </div>
+        </div>
+        <div id="instructionsModal" class="modal modal--open modal--onecol t-center modal--welcome">
+            <div class="modal__box">
+                <div class="modal__content">
+                    <h1 class="modal__h1">Instructions</h1>
+                    <div class="modal__scroller">
+                        <img id="instructionsImg" class="modal__img" width="auto" src="img/ui/instructions-placeholder.jpg" alt="logo" width="100%">
+                    </div>
+                    <a class="btn btn--sfx" data-modal-close="instructionsModal"> Adjust difficulty</a>
+                </div>
+            </div>
+        </div>
+        <div id="welcomeModal" class="modal modal--closed modal--twocol t-center modal--welcome">
+            <div class="modal__box">
+                <div class="modal__content">
+                    <h1 class="modal__h1">Welcome to</h1>
+                    <img class="modal__img" src="img/logo.svg" alt="logo" width="100%">
+                    <a class="btn btn--sfx" data-modal-close="welcomeModal" onclick="Instructions.showGif()"> Read instructions</a>
+                    <a class="btn btn--sfx" data-modal-close="welcomeModal, instructionsModal"> Adjust difficulty</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="p1house">
+            <div id="p2house">
+                <!-- ######## CHARACTER SECTION ######## -->
+                <section id="charactersPage" class="characters">
+                    <div id="dragInstruction" class="characters__draginstruction"><i>←</i><i>→</i></div>
+                    <div id="charSelectionMessage" class="modal modal--closed modal--replace modal--twocol">
+                        <div class="modal__tokens"></div>
+                        <div class="modal__box modal__box--start">
+                            <span class="modal__close btn--hover btn--sfx btn--close" data-modal-close="charSelectionMessage">X</span>
+                            <div class="modal__content">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="characters__wrapper">
+                        <div id="p1Container" class="p1">
+                            <div id="p1Slider" class="p1__slider characters__slider">
+
+                            </div>
+                        </div>
+                        <div class="characters__menu">
+                            <div class="characters__menu--inner">
+                                <div id="vs1" class="characters__vs characters__vs--1">-</div>
+                                <div class="characters__vs characters__vs--text">VS</div>
+                                <div id="vs2" class="characters__vs characters__vs--2">-</div>
+                                <a href="#" id="charSelectBtn" class="sfx characters__start btn--sfx" data-modal-open="charSelectionMessage"><span>Confirm</span></a>
+                            </div>
+                        </div>
+                        <div id="p2Container" class="p2">
+                            <div id="p2Slider" class="p2__slider characters__slider">
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ######## BOARD SECTION ######## -->
+                <section id="gamePage" class="game game--notstarted">
+                    <h1 class="game__heading">Chaos isn’t a pit. <br>Chaos is a ladder.</h1>
+                    <div id="gameMenu" class="game__menu">
+                        <button id="rollDiceBtn" class="btn--roll game__roll"><span>Roll Dice</span></button>
+                        <div class="dicecontainer">
+                            <div id="roller" class="dicecontainer__roller">
+                                <div id="dice" class="dicecontainer__dice">
+                                    <span id="dice1" class="dicecontainer__dice--1">
+                                <i></i>
+                            </span>
+                                    <span id="dice2" class="dicecontainer__dice--2">
+                                <i></i> <i></i>
+                            </span>
+                                    <span id="dice3" class="dicecontainer__dice--3">
+                                <i></i> <i></i> <i></i>
+                            </span>
+                                    <span id="dice4" class="dicecontainer__dice--4">
+                                <i></i> <i></i> <i></i> <i></i>
+                            </span>
+                                    <span id="dice5" class="dicecontainer__dice--5">
+                                <i></i> <i></i> <i></i> <i></i> <i></i>
+                            </span>
+                                    <span id="dice6" class="dicecontainer__dice--6">
+                                <i></i> <i></i> <i></i> <i></i> <i></i> <i></i>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="gameOverlay" class="game__overlay">
+                        <div id="messageContainer" class="game__turn game__turn--show">
+                        </div>
+                    </div>
+                    <div id="gameContainer" class="game__board">
+                        <div class="game__gif"></div>
+                        <div id="gameTilesContainer" class="game__tiles">
+                            <div id="playerOne" class="game__characters game__characters--one" data-tile="1">
+                            </div>
+                            <div id="playerTwo" class="game__characters game__characters--two" data-tile="1">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ######## RESULTS SECTION ######## -->
+                <section id="throneContainer" class="throne throne--empty">
+                    <div class="throne__taker"></div>
+                    <img src="img/throne/throne.png" alt="throne" id="throneSeat" class="throne__seat">
+                    <div class="throne__particles"></div>
+                </section>
+
+                <section id="resultsPage" class="results results--notready">
+                    <figure id="quote" class="results__quote"></figure>
+                    <div id="resultsLoser" class="results__box results__loser">
+                        <div id="highscoreLoser" class="highscore">
+
+                        </div>
+                    </div>
+                    <div id="resultsWinner" class="results__box results__winner">
+                        <div id="highscoreWinner" class="highscore">
+                        </div>
+                    </div>
+                    <div class="results__menu">
+                        <a id="playAgainBtn" class="btn btn--sfx">Start new game</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- Preload trap gifs -->
+        <img src="img/traps/animations/dayne.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/martell.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/dondarrion.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/baratheon.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/targaryen.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/mormont.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/greyjoy.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/baelish.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/bolton.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/stark.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/nightking.gif" alt="" style="display:none;">
+        <img src="img/traps/animations/melisandre.gif" alt="" style="display:none;">
+
+        <!-- Preload trap bg -->
+        <img src="img/traps/backgrounds/targaryen.jpg" alt="" style="display:none;">
+        <img src="img/traps/backgrounds/baelish.jpg" alt="" style="display:none;">
+        <img src="img/traps/backgrounds/baratheon.jpg" alt="" style="display:none;">
+        <img src="img/traps/backgrounds/bolton.jpg" alt="" style="display:none;">
+        <img src="img/traps/backgrounds/dayne.jpg" alt="" style="display:none;">
+        <img src="img/traps/backgrounds/greyjoy.jpg" alt="" style="display:none;">
+        <img src="img/traps/backgrounds/martell.jpg" alt="" style="display:none;">
+        <img src="img/traps/backgrounds/mormont.jpg" alt="" style="display:none;">
+        <img src="img/traps/backgrounds/nightking.jpg" alt="" style="display:none;">
+        <img src="img/traps/backgrounds/stark.jpg" alt="" style="display:none;">
+    </div>
+
+    <!-- JS -->
+    <script src="js/modals.js?v=14" type="text/javascript"></script>
+    <script src="js/script.js?v=14" type="text/javascript"></script>
+</body>
+</html>

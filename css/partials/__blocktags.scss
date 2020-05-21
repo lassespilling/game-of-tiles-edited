@@ -1,0 +1,61 @@
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -mox-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+}
+*,
+* :after,
+* window.matchMedia :before {
+    box-sizing: border-box;
+}
+body {
+    font-size: 16px;
+    @include bodyType();
+    max-width: 100vw;
+    background: black;
+}
+
+img {
+    max-width: 100%;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
+h1 {
+    margin-bottom: 1.5rem;
+    @include displayType(1.5rem);
+}
+p {
+    font-size: 1rem;
+    line-height: 1rem;
+    margin-bottom: 1.5rem;
+    max-width: 30rem;
+    margin: auto;
+    @include bodyType();
+}
+
+ul {
+    list-style: none;
+}
+
+a,
+button {
+    @include displayType();
+}
+#loadPage {
+    @include transition(opacity 1s ease);
+    @include timing();
+}

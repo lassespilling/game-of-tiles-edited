@@ -1,0 +1,11 @@
+// Hide all tokens by default
+@include houses(stark, $color--stark, '\e900');
+@include houses(mormont, $color--mormont, '\e901');
+@include houses(greyjoy, $color--greyjoy, '\e902');
+@include houses(baratheon, $color--baratheon, '\e908');
+@include houses(dayne, $color--dayne, '\e904');
+@include houses(bolton, $color--bolton, '\e905');
+@include houses(martell, $color--martell, '\e906');
+@include houses(targaryen, $color--targaryen, '\e907');
+@include houses(dondarrion, $color--dondarrion, '\e903');
+@include houses(baelish, $color--baelish, '\e909');

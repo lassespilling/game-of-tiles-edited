@@ -1,0 +1,772 @@
+/* Board page
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.game {
+    max-width: 100vw;
+    max-height: 100vh;
+    background: url("../img/bg3.jpg") center center / cover no-repeat;
+    @include transition(all 0.5s ease);
+    @include timing();
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    display: grid;
+    z-index: 999;
+    position: absolute;
+    grid-template-columns: 100vw;
+    grid-template-rows: 100vh;
+    grid-template-areas: "b b b";
+    &:before,
+    &:after {
+        content: "";
+        background: center center / cover no-repeat;
+        position: absolute;
+        pointer-events: none;
+        z-index: 9;
+        top: 0;
+        transform: scale(1.2);
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        @include transition(all 0.5s ease);
+        @include timing();
+    }
+    &__gif {
+        position: absolute;
+        pointer-events: none;
+        z-index: 9;
+        top: 0;
+        transform: scale(1.2);
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        -webkit-filter: saturate(200%) blur(2px);
+        filter: saturate(200%) blur(2px);
+        mix-blend-mode: screen; // Blend mode
+        @include transition(transform 0.5s ease, opacity 0.5s ease);
+    }
+    // &:before {
+    //     opacity: 0;
+    //     background-position: center center;
+    //     background-size: cover;
+    //     background-repeat: no-repeat;
+    //     -webkit-filter: saturate(200%) blur(2px);
+    //     filter: saturate(200%) blur(2px);
+    //     mix-blend-mode: screen; // Blend mode
+    //     @include transition(transform 0.5s ease, opacity 0.5s ease);
+    // }
+    &--notstarted {
+        opacity: 0;
+        height: 100vh;
+        pointer-events: none;
+    }
+
+    &--hasstarted {
+        opacity: 1;
+        height: auto;
+        pointer-events: all;
+    }
+
+    &__heading {
+        grid-area: h;
+        margin-bottom: 2rem;
+
+        @include md {
+            display: none;
+        }
+    }
+
+    &__menu {
+        grid-area: m;
+        display: grid;
+        grid-area: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 100vh;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        z-index: 99;
+        @include transition(all 0.3s ease);
+        @include timing();
+        transform-origin: center;
+
+        &--hide {
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        grid-template-areas: "roll";
+    }
+
+    &__roll {
+        grid-area: roll;
+    }
+
+    &__overlay {
+        pointer-events: none;
+        position: fixed;
+        z-index: 100;
+        width: 100vw;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        max-width: 100vw;
+    }
+
+    &__turn {
+        text-align: center;
+        @include transition(all 0.5s ease);
+        @include timing();
+
+        &--show {
+            @include transition(all 0.5s ease);
+            @include timing();
+        }
+        &--win {
+            opacity: 1;
+            @include transition(all 0.5s ease);
+            @include timing();
+        }
+
+        & h1 {
+            @include uiType();
+            display: inline-block;
+            color: tint($color--cards, 60%);
+            font-size: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            box-shadow: 0px 0px 5rem rgba(0, 0, 0, 0.2);
+            @include sm {
+                font-size: 1.1rem;
+                letter-spacing: 0 !important; // override blocktag default
+            }
+        }
+    }
+
+    &__board {
+        grid-area: b;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    &__tiles {
+        height: 70vh;
+        width: 80vw;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        position: relative;
+        display: grid;
+        grid-template-areas:
+            "t25 t26 t27 t28 t29 t30"
+            "t24 t23 t22 t21 t20 t19"
+            "t13 t14 t15 t16 t17 t18"
+            "t12 t11 t10 t9 t8 t7"
+            "t1 t2 t3 t4 t5 t6";
+        @include md {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            grid-template-areas:
+                "t30 t29 t28"
+                "t25 t26 t27"
+                "t24 t23 t22"
+                "t19 t20 t21"
+                "t18 t17 t16"
+                "t13 t14 t15"
+                "t12 t11 t10"
+                "t7 t8 t9"
+                "t6 t5 t4"
+                "t1 t2 t3";
+        }
+    }
+
+    &__tile {
+        // Tiles
+        box-shadow: inset 0px 0px 1px rgba(tint($color--cards, 30%), 0.8);
+        box-sizing: border-box;
+        color: rgba(tint($color--cards, 30%), 0.8);
+        border-radius: 1rem;
+        overflow: hidden;
+        width: 90%;
+        height: 80%;
+        @include tiles($from: 1, $to: 30);
+
+        &#t1 {
+            // Start tile
+            background: rgba(shade($start, 50%), 0.6);
+            box-shadow: inset 0px 0px 1px rgba(tint($start, 30%), 0.8);
+            color: $start;
+        }
+
+        &#t30 {
+            // Throne tile
+            background: rgba(shade($throne, 50%), 0.6);
+            box-shadow: inset 0px 0px 1px rgba(tint($throne, 30%), 0.8);
+            color: $throne;
+
+            &:before {
+                content: "Iron Throne";
+            }
+        }
+    }
+
+    &__characters {
+        height: 100%;
+        width: 100%;
+        display: inline-block;
+        margin: auto;
+
+        &--one,
+        &--two {
+            position: relative;
+            &::before,
+            &::after {
+                font-family: "houses" !important;
+                @include transition(all 0.2s ease);
+                @include timing();
+                font-size: 3rem;
+                display: inline-block;
+            }
+            &::before {
+                content: "";
+                display: block;
+                width: 3.5rem;
+                height: 3.5rem;
+                position: absolute;
+            }
+            @include xl {
+                &[data-tile="7"],
+                &[data-tile="8"],
+                &[data-tile="9"],
+                &[data-tile="10"],
+                &[data-tile="11"],
+                &[data-tile="12"],
+                &[data-tile="19"],
+                &[data-tile="20"],
+                &[data-tile="21"],
+                &[data-tile="22"],
+                &[data-tile="23"],
+                &[data-tile="24"] {
+                    &:before,
+                    &:after {
+                        -webkit-transform: scaleX(-1);
+                        transform: scaleX(-1);
+                    }
+                }
+            }
+            @include md {
+                &[data-tile="4"],
+                &[data-tile="5"],
+                &[data-tile="6"],
+                &[data-tile="10"],
+                &[data-tile="11"],
+                &[data-tile="12"],
+                &[data-tile="16"],
+                &[data-tile="17"],
+                &[data-tile="18"],
+                &[data-tile="22"],
+                &[data-tile="23"],
+                &[data-tile="24"],
+                &[data-tile="28"],
+                &[data-tile="29"],
+                &[data-tile="30"] {
+                    &:before,
+                    &:after {
+                        -webkit-transform: scaleX(-1);
+                        transform: scaleX(-1);
+                    }
+                }
+            }
+
+            &[data-tile="1"] {
+                grid-area: t1;
+            }
+
+            &[data-tile="2"] {
+                grid-area: t2;
+            }
+
+            &[data-tile="3"] {
+                grid-area: t3;
+            }
+
+            &[data-tile="4"] {
+                grid-area: t4;
+            }
+
+            &[data-tile="5"] {
+                grid-area: t5;
+            }
+
+            &[data-tile="6"] {
+                grid-area: t6;
+            }
+
+            &[data-tile="7"] {
+                grid-area: t7;
+            }
+
+            &[data-tile="8"] {
+                grid-area: t8;
+            }
+
+            &[data-tile="9"] {
+                grid-area: t9;
+            }
+
+            &[data-tile="10"] {
+                grid-area: t10;
+            }
+
+            &[data-tile="11"] {
+                grid-area: t11;
+            }
+
+            &[data-tile="12"] {
+                grid-area: t12;
+            }
+
+            &[data-tile="13"] {
+                grid-area: t13;
+            }
+
+            &[data-tile="14"] {
+                grid-area: t14;
+            }
+
+            &[data-tile="15"] {
+                grid-area: t15;
+            }
+
+            &[data-tile="16"] {
+                grid-area: t16;
+            }
+
+            &[data-tile="17"] {
+                grid-area: t17;
+            }
+
+            &[data-tile="18"] {
+                grid-area: t18;
+            }
+
+            &[data-tile="19"] {
+                grid-area: t19;
+            }
+
+            &[data-tile="20"] {
+                grid-area: t20;
+            }
+
+            &[data-tile="21"] {
+                grid-area: t21;
+            }
+
+            &[data-tile="22"] {
+                grid-area: t22;
+            }
+
+            &[data-tile="23"] {
+                grid-area: t23;
+            }
+
+            &[data-tile="24"] {
+                grid-area: t24;
+            }
+
+            &[data-tile="25"] {
+                grid-area: t25;
+            }
+
+            &[data-tile="26"] {
+                grid-area: t26;
+            }
+
+            &[data-tile="27"] {
+                grid-area: t27;
+            }
+
+            &[data-tile="28"] {
+                grid-area: t28;
+            }
+
+            &[data-tile="29"] {
+                grid-area: t29;
+            }
+
+            &[data-tile="30"] {
+                grid-area: t30;
+            }
+
+            &[data-tile="31"] {
+                grid-area: t30;
+            }
+
+            &[data-tile="32"] {
+                grid-area: t30;
+            }
+
+            &[data-tile="33"] {
+                grid-area: t30;
+            }
+
+            &[data-tile="34"] {
+                grid-area: t30;
+            }
+
+            &[data-tile="35"] {
+                grid-area: t30;
+            }
+
+            &[data-tile="36"] {
+                grid-area: t30;
+            }
+        }
+
+        &--one {
+            grid-area: t1;
+
+            @include transition(all 2s ease);
+
+            &::before {
+                bottom: 60%;
+                left: 0;
+
+                @include md {
+                    bottom: 1rem;
+                }
+            }
+        }
+
+        &--two {
+            @include transition(all 2s ease);
+
+            &::before {
+                bottom: 30%;
+                right: 0;
+
+                @include md {
+                    bottom: 1rem;
+                }
+            }
+        }
+    }
+}
+
+.dicecontainer {
+    grid-area: dice;
+    perspective: $dice-perspective;
+    transform-origin: center center;
+    z-index: 5;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    pointer-events: none;
+
+    &__dice {
+        transform-style: preserve-3d;
+        transform-origin: center center;
+        width: $dice-size;
+        height: $dice-size;
+        position: relative;
+        @include transition(all $dice-transition ease);
+        cursor: pointer;
+
+        & i {
+            border-radius: 100%;
+            background: black;
+            display: block;
+            width: 0.5rem;
+            height: 0.5rem;
+            margin: auto;
+            align-content: center;
+            align-self: center;
+        }
+
+        &[data-player="1"] {
+            & span::after {
+            }
+        }
+
+        &[data-player="2"] {
+            & span::after {
+            }
+
+            & i {
+                background: white;
+            }
+        }
+
+        &--1,
+        &--2,
+        &--3,
+        &--4,
+        &--5,
+        &--6 {
+            height: $dice-size;
+            width: $dice-size;
+            display: block;
+            display: grid;
+            position: absolute;
+
+            &::before {
+                content: "";
+                position: absolute;
+                width: $dice-size;
+                height: $dice-size;
+                z-index: -2;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                width: $dice-size;
+                height: $dice-size;
+                background: white;
+                border-radius: $dice-size/4;
+                z-index: -1;
+            }
+        }
+
+        &--1 {
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-areas:
+                ". . . . ."
+                ". . . . ."
+                ". . a . ."
+                ". . . . ."
+                ". . . . .";
+
+            & i:nth-of-type(1) {
+                grid-area: a;
+            }
+
+            transform: rotateY(0deg) translateZ($dice-size/2);
+        }
+
+        &--2 {
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-areas:
+                ". . . . ."
+                ". a . . ."
+                ". . . . ."
+                ". . . b ."
+                ". . . . .";
+
+            & i:nth-of-type(1) {
+                grid-area: a;
+            }
+
+            & i:nth-of-type(2) {
+                grid-area: b;
+            }
+
+            transform: rotateY(180deg) translateZ($dice-size/2);
+        }
+
+        &--3 {
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-areas:
+                ". . . . ."
+                ". a . . ."
+                ". . b . ."
+                ". . . c ."
+                ". . . . .";
+
+            & i:nth-of-type(1) {
+                grid-area: a;
+            }
+
+            & i:nth-of-type(2) {
+                grid-area: b;
+            }
+
+            & i:nth-of-type(3) {
+                grid-area: c;
+            }
+
+            transform: rotateX(90deg) translateZ($dice-size/2);
+        }
+
+        &--4 {
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-areas:
+                ". . . . ."
+                ". a . b ."
+                ". . . . ."
+                ". c . d ."
+                ". . . . .";
+
+            & i:nth-of-type(1) {
+                grid-area: a;
+            }
+
+            & i:nth-of-type(2) {
+                grid-area: b;
+            }
+
+            & i:nth-of-type(3) {
+                grid-area: c;
+            }
+
+            & i:nth-of-type(4) {
+                grid-area: d;
+            }
+
+            transform: rotateY(-90deg) translateZ($dice-size/2);
+        }
+
+        &--5 {
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-areas:
+                ". . . . ."
+                ". a . b ."
+                ". . c . ."
+                ". d . e ."
+                ". . . . .";
+
+            & i:nth-of-type(1) {
+                grid-area: a;
+            }
+
+            & i:nth-of-type(2) {
+                grid-area: b;
+            }
+
+            & i:nth-of-type(3) {
+                grid-area: c;
+            }
+
+            & i:nth-of-type(4) {
+                grid-area: d;
+            }
+
+            & i:nth-of-type(5) {
+                grid-area: e;
+            }
+
+            transform: rotateY(90deg) translateZ($dice-size/2);
+            z-index: 99;
+        }
+
+        &--6 {
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-areas:
+                ". . . . ."
+                ". a b c ."
+                ". . . . ."
+                ". d e f ."
+                ". . . . .";
+
+            & i:nth-of-type(1) {
+                grid-area: a;
+            }
+
+            & i:nth-of-type(2) {
+                grid-area: b;
+            }
+
+            & i:nth-of-type(3) {
+                grid-area: c;
+            }
+
+            & i:nth-of-type(4) {
+                grid-area: d;
+            }
+
+            & i:nth-of-type(5) {
+                grid-area: e;
+            }
+
+            & i:nth-of-type(6) {
+                grid-area: f;
+            }
+
+            transform: rotateX(-90deg) translateZ($dice-size/2);
+        }
+    }
+
+    &__dice--one &__dice--two,
+    &__dice--three,
+    &__dice--four,
+    &__dice--five,
+    &__dice--six {
+        @include transition(all $dice-transition ease);
+    }
+
+    &__roller {
+        transform-style: preserve-3d;
+        transform-origin: center center;
+        width: 3rem;
+        height: 3rem;
+        position: relative;
+        display: inline-block;
+        @include transition(all 1s ease);
+        pointer-events: none;
+    }
+
+    &__dice--throwone {
+        transform: rotateY(0deg) translateZ(1rem);
+    }
+
+    &__dice--throwtwo {
+        transform: rotateY(180deg) translateZ(1rem);
+    }
+
+    &__dice--throwthree {
+        transform: rotateX(-90deg) translateZ(1rem);
+    }
+
+    &__dice--throwfour {
+        transform: rotateY(90deg) translateZ(1rem);
+    }
+
+    &__dice--throwfive {
+        transform: rotateY(-90deg) translateZ(1rem);
+    }
+
+    &__dice--throwsix {
+        transform: rotateX(90deg) translateZ(1rem);
+    }
+}
+
+// Traps
+.trap {
+    @include displayType();
+    &:before {
+        content: "";
+    }
+    @include sm {
+        font-size: 0.5rem;
+    }
+}
+[data-trap="nightking"] {
+    // Text style for trap message
+    color: $color--nightking;
+}
+@include trap(dayne,$color--dayne,"dayne.gif","Greatsword","dayne.jpg");
+@include trap(martell,$color--martell,"martell.gif","The Sun","martell.jpg");
+@include trap(dondarrion,$color--dondarrion,"dondarrion.gif","Forked Lightning");
+@include trap(baratheon,$color--baratheon,"baratheon.gif","Black Stag","baratheon.jpg");
+@include trap(targaryen,$color--targaryen,"targaryen.gif","Dragons","targaryen.jpg");
+@include trap(mormont,$color--mormont,"mormont.gif","Bear island","mormont.jpg");
+@include trap(greyjoy,$color--greyjoy,"greyjoy.gif","The Kraken","greyjoy.jpg");
+@include trap(baelish,$color--baelish,"baelish.gif","Mockingbirds","baelish.jpg");
+@include trap(bolton,$color--bolton,"bolton.gif","Dreadford","bolton.jpg");
+@include trap(stark,$color--stark,"stark.gif","Wolfpack","stark.jpg");
+@include trap(melisandre,$color--melisandre,"melisandre.gif","Melisandre");
+@include trap(nightking,$color--nightking,"nightking.gif","Nightking","nightking.jpg");

@@ -1,0 +1,468 @@
+// Colours
+@function tint($color, $percentage) {
+    @return mix(white, $color, $percentage);
+}
+
+@function shade($color, $percentage) {
+    @return mix(black, $color, $percentage);
+}
+
+// Media queries
+@mixin xl {
+    @media screen and (min-width: 993px) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @media screen and (max-width: 992px) {
+        @content;
+    }
+}
+
+@mixin md {
+    @media screen and (max-width: 768px) {
+        @content;
+    }
+}
+@mixin md-plus {
+    @media screen and (min-width: 601px) {
+        @content;
+    }
+}
+
+@mixin sm {
+    @media screen and (max-width: 600px) {
+        @content;
+    }
+}
+
+// Typography
+@mixin displayType($size: 0.8rem) {
+    font-family: "got", serif;
+    font-size: $size;
+    letter-spacing: 0.1rem;
+}
+@mixin bodyType() {
+    font-family: $bodyType, serif;
+}
+@mixin uiType() {
+    font-family: $uiType, serif;
+}
+@mixin housesType() {
+    font-family: $housesType;
+}
+
+// Linear gradients
+@mixin linear-gradient($direction, $color-stops...) {
+    background: nth(nth($color-stops, 1), 1);
+    background: -webkit-linear-gradient(
+        legacy-direction($direction),
+        $color-stops
+    );
+    background: linear-gradient($direction, $color-stops);
+}
+
+// Transitions
+@mixin transition($args...) {
+    -webkit-transition: $args;
+    -moz-transition: $args;
+    -ms-transition: $args;
+    -o-transition: $args;
+    transition: $args;
+}
+
+// Transition timing
+@mixin timing($timing: cubic-bezier(0.19, 1, 0.22, 1)) {
+    -webkit-transition-timing-function: $timing;
+    -moz-transition-timing-function: $timing;
+    -o-transition-timing-function: $timing;
+    transition-timing-function: $timing;
+}
+
+// Animations
+@mixin keyframes($animation-name) {
+    @-webkit-keyframes #{$animation-name} {
+        @content;
+    }
+
+    @-moz-keyframes #{$animation-name} {
+        @content;
+    }
+
+    @-ms-keyframes #{$animation-name} {
+        @content;
+    }
+
+    @-o-keyframes #{$animation-name} {
+        @content;
+    }
+
+    @keyframes #{$animation-name} {
+        @content;
+    }
+}
+
+@mixin animation($str...) {
+    -webkit-animation: #{$str};
+    -moz-animation: #{$str};
+    -ms-animation: #{$str};
+    -o-animation: #{$str};
+    animation: #{$str};
+}
+
+// No select
+@mixin userSelect($str) {
+    -webkit-touch-callout: $str; /* iOS Safari */
+    -webkit-user-select: $str; /* Safari */
+    -khtml-user-select: $str; /* Konqueror HTML */
+    -moz-user-select: $str; /* Old versions of Firefox */
+    -ms-user-select: $str; /* Internet Explorer/Edge */
+    user-select: $str; /* Non-prefixed version, currently
+                          supported by Chrome */
+}
+
+// Generate Game Tiles using #t1 tag
+@mixin tiles($from: 1, $to: 30) {
+    @for $i from $from to ($to + 1) {
+        &#t#{$i} {
+            grid-area: t + $i;
+            display: grid;
+            align-content: center;
+        }
+        &#t#{$i}::before {
+            content: "#{$i}";
+            display: block;
+            text-align: center;
+        }
+    }
+}
+
+// Houses styling
+@mixin houses($house, $color, $token) {
+    .p1--#{$house} {
+        // Player one styles
+        // Characters page
+        & .characters__start--bothselected {
+            // Start modal
+            &:before {
+                // Left gradient
+                background-image: linear-gradient(
+                    135deg,
+                    rgba($color, 0.4),
+                    transparent
+                );
+            }
+        }
+        & .characters__vs--1 {
+            // Vs text color
+            color: $color;
+            &:before {
+                content: $token;
+            }
+        }
+        & .btn--1,
+        & .btn--2 {
+            border-color: $color;
+            &:hover {
+                color: $color;
+            }
+        }
+        & .modal--play, // Play modal btn
+        & .modal--both, // Both modal btn
+        & .modal--1 {
+            // P1 modal btn
+            &:before {
+                background-image: linear-gradient(
+                    135deg,
+                    rgba($color, 0.4),
+                    transparent
+                );
+            }
+        }
+        & .btn--both {
+            // Btn style
+            &:before {
+                // Left gradient
+                background-image: linear-gradient(
+                    135deg,
+                    rgba($color, 0.4),
+                    transparent
+                );
+            }
+        }
+        & .modal__tokens:before {
+            // Modal token background
+            color: $color;
+            content: $token;
+        }
+
+        // Game board page
+        & .dicecontainer__dice[data-player="1"] i {
+            // Dice eyes color
+            background: shade($color, 70%); // 70% shade of color
+        }
+        & .dicecontainer__dice[data-player="1"] span::after {
+            // Dice bg color
+            background: $color;
+        }
+        & .btn--roll[data-player="1"] span {
+            // Press anywhere to roll text
+            color: $color;
+        }
+        & .btn--roll[data-player="1"] {
+            // Whos turn page inner glow
+            -webkit-box-shadow: inset 0px 0px 25px 13px $color;
+            -moz-box-shadow: inset 0px 0px 25px 13px $color;
+            box-shadow: inset 0px 0px 25px 13px $color;
+            @include transition(
+                box-shadow 0.5s ease,
+                -moz-box-shadow 0.5s ease,
+                -moz-box-shadow 0.5s ease
+            );
+        }
+        & .game__characters--one::before {
+            // Token BG
+            background: transparent;
+            color: $color;
+            content: $token;
+        }
+
+        // Results page
+        & .throne--p1 {
+            & .throne__taker {
+                &:before {
+                    content: $token;
+                    color: $color;
+                }
+            }
+        }
+        & .highscore--p1 span {
+            // Highscore table borders
+            border-color: $color;
+        }
+        & .results--p1 {
+            // Highscore bg
+            background-image: radial-gradient(rgba($color, 0.4), transparent);
+            &:before {
+                content: $token;
+                -webkit-text-stroke-color: $color;
+                color: rgba(shade($color, 70%), 0.8);
+            }
+        }
+        & [data-player="1"] {
+            color: $color;
+        } // Modal text color
+    }
+    .p2--#{$house} {
+        // Player two styles
+        // Characters page
+        & .characters__start--bothselected {
+            // Start modal
+            &:after {
+                // Left gradient
+                background-image: linear-gradient(
+                    -45deg,
+                    rgba($color, 0.4),
+                    transparent
+                );
+            }
+        }
+        & .characters__vs--2 {
+            // Vs text color
+            color: $color;
+            @include xl {
+                &:after {
+                    content: $token;
+                }
+            }
+            @include lg {
+                &:after {
+                    content: $token;
+                }
+            }
+        }
+        & .btn--1,
+        & .btn--2 {
+            border-color: $color;
+            &:hover {
+                color: $color;
+            }
+        }
+        & .modal--play, // Play modal btn
+        & .modal--both, // Both modal btn
+        & .modal--2 {
+            // P2 modal btn
+            &:after {
+                background-image: linear-gradient(
+                    -45deg,
+                    rgba($color, 0.4),
+                    transparent
+                );
+            }
+        }
+        & .btn--both {
+            // Btn style
+            &:after {
+                // Left gradient
+                background-image: linear-gradient(
+                    -45deg,
+                    rgba($color, 0.4),
+                    transparent
+                );
+            }
+        }
+        & .modal__tokens:after {
+            // Modal token background
+            color: $color;
+            content: $token;
+        }
+
+        // Game board page
+        & .dicecontainer__dice[data-player="2"] i {
+            // Dice eyes color
+            background: shade($color, 70%); // 70% shade of color
+        }
+        & .dicecontainer__dice[data-player="2"] span::after {
+            // Dice bg color
+            background: $color;
+        }
+        & .btn--roll[data-player="2"] span {
+            // Press anywhere to roll text
+            color: $color;
+        }
+        & .btn--roll[data-player="2"] {
+            // Whos turn page inner glow
+            -webkit-box-shadow: inset 0px 0px 25px 13px $color;
+            -moz-box-shadow: inset 0px 0px 25px 13px $color;
+            box-shadow: inset 0px 0px 25px 13px $color;
+            @include transition(
+                box-shadow 0.5s ease,
+                -moz-box-shadow 0.5s ease,
+                -moz-box-shadow 0.5s ease
+            );
+        }
+        & .game__characters--two::after {
+            // Token BG
+            background: transparent;
+            color: $color;
+            content: $token;
+        }
+
+        // Results page
+        & .throne--p2 {
+            & .throne__taker {
+                &:before {
+                    content: $token;
+                    color: $color;
+                }
+            }
+        }
+        & .highscore--p2 span {
+            // Highscore table borders
+            border-color: $color;
+        }
+        & .results--p2 {
+            // Highscore bg
+            background-image: radial-gradient(rgba($color, 0.4), transparent);
+            &:before {
+                content: $token;
+                -webkit-text-stroke-color: $color;
+                color: rgba(shade($color, 70%), 0.8);
+            }
+        }
+        & [data-player="2"] {
+            color: $color;
+        } // Modal text color
+    }
+    [data-house="#{$house}"]:checked + label .card {
+        border-color: $color;
+        background: rgba(shade($color, 80%), 0.6);
+        box-shadow: inset 0px 0px 15px $color;
+        &:before {
+            color: $color;
+            content: $token;
+        }
+        &__name {
+            color: $color;
+        }
+        & [data-type="label"] {
+            background: shade($color, 70%);
+            color: tint($color, 40%);
+        }
+        & [data-type="info"] {
+            border-color: shade($color, 50%);
+            color: tint($color, 40%);
+        }
+    }
+}
+
+// Traps
+@mixin trap($trapid, $trapcolor, $gifurl, $traptitle, $bgurl: inherit) {
+    .trap--#{$trapid} {
+        // Trap tile (specified in js)
+        background: rgba(shade($trapcolor, 80%), 0.6); // Tile bg color
+        box-shadow: inset 0px 0px 1px rgba(tint($trapcolor, 30%), 0.8); // Tile border
+        color: $trapcolor; // Tile text color
+        &:before {
+            // Tile text content
+            content: $traptitle !important;
+        }
+    }
+    .game--#{$trapid} {
+        @if ($bgurl == inherit) {
+        } @else {
+            background: url("../img/traps/backgrounds/#{$bgurl}") center center/cover no-repeat;
+        }
+        & [data-trap="#{$trapid}"] {
+            // Text style for trap message
+            color: $trapcolor;
+        }
+        & .game__turn h1 {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        & .game__gif {
+            @if $gifurl {
+                background-image: url("../img/traps/animations/#{$gifurl}"); // Image
+            }
+            transform: scale(1); // Scale in transition
+            @include transition(transform 0.5s ease, opacity 0.5s ease);
+            opacity: 1;
+        }
+        // &:before { // Board image overlay
+        //     @if $gifurl {
+        //         background-image: url('../img/#{$gifurl}'); // Image
+        //     }
+        //     transform: scale(1); // Scale in transition
+        //     @include transition(transform 0.5s ease, opacity 0.5s ease);
+        //     opacity: 1;
+        // }
+        & .game__menu--hide {
+            // Board color overlay
+            background: transparent;
+        }
+        & .btn--roll span {
+            opacity: 0;
+            @include transition(all 0.2s ease);
+        }
+        & .game__tile {
+            opacity: 0;
+            @include transition(all 0.2s ease);
+        }
+        &:after {
+            background: transparent;
+            @include transition(all 0.2s ease);
+        }
+        & .btn--roll[data-player="2"],
+        & .btn--roll[data-player="1"] {
+            -webkit-box-shadow: inset 0px 0px 25px 0px $trapcolor !important;
+            -moz-box-shadow: inset 0px 0px 25px 0px $trapcolor !important;
+            box-shadow: inset 0px 0px 25px 0px $trapcolor !important;
+            @include transition(
+                box-shadow 0.5s ease,
+                -moz-box-shadow 0.5s ease,
+                -moz-box-shadow 0.5s ease
+            );
+        }
+    }
+}

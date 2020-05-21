@@ -1,0 +1,555 @@
+/* Characters page
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.characters {
+    background: url("../img/bg2.jpg") center center / cover no-repeat;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+    & * {
+        // Disable user select
+        @include userSelect(none);
+    }
+    &__draginstruction {
+        position: absolute;
+        top: -100vw;
+        left: -100vw;
+        pointer-events: none;
+        opacity: 0;
+        width: 100px;
+        height: 100px;
+        align-content: center;
+        z-index: 99999;
+        display: grid;
+        color: tint($color--cards, 60%);
+        text-shadow: 0px 0px 25px 0px black;
+        grid-template-columns: 1fr 1fr;
+        @include transition(opacity 0.1s linear);
+        // &:before {
+        //     content:'hold and drag';
+        //     text-align: center;
+        //     width: 100%;
+        //     bottom: 0;
+        //     position: absolute;
+        // }
+        & i {
+            font-size: 2rem;
+        }
+        & i:nth-of-type(1) {
+            transform: translateX(-30%);
+            @include animation(arrowLeft 1s ease forwards infinite);
+            @include keyframes(arrowLeft) {
+                0% {
+                    transform: translateX(-30%);
+                }
+                50% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(-30%);
+                }
+            }
+        }
+        & i:nth-of-type(2) {
+            transform: translateX(-30%);
+            text-align: right;
+            @include animation(arrowRight 1s ease forwards infinite);
+            @include keyframes(arrowRight) {
+                0% {
+                    transform: translateX(-30%);
+                }
+                50% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(-30%);
+                }
+            }
+        }
+        &--hover {
+            opacity: 1;
+            @include transition(opacity 0.1s);
+        }
+    }
+    &--notpicked {
+        opacity: 1;
+        pointer-events: all;
+    }
+    &--picked {
+        opacity: 0;
+        pointer-events: none;
+    }
+    &:before {
+        content: "";
+        position: absolute;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        pointer-events: none;
+    }
+    &--active:before {
+    }
+    &--active &__slider:not(&__slider--active),
+    &--active &__menu {
+        @include transition(all 0.2s ease 0.1s);
+        @include timing();
+    }
+    &__wrapper {
+        // Center content
+        position: absolute;
+        top: 50%;
+        width: 100vw;
+        transform: translateY(-50%);
+    }
+    &__slider {
+        overflow-x: scroll;
+        white-space: nowrap;
+        user-select: none;
+        @include transition(transform 0.5s ease 0.1s);
+        @include timing();
+        transform: scale(1);
+        position: relative;
+        perspective: 500px;
+        z-index: 9;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        &--active {
+            filter: brightness(105%);
+            transform: scale(1);
+            overflow: hidden;
+            z-index: 10;
+            cursor: grabbing;
+            cursor: -moz-grabbing;
+            cursor: -webkit-grabbing;
+        }
+    }
+    &__menu {
+        text-align: center;
+        width: 100%;
+        height: auto;
+        position: relative;
+        @include xl {
+            max-width: 700px;
+            margin: auto;
+        }
+        &:after {
+            content: "";
+            position: absolute;
+            background: url("../img/torch-right.gif") center center / contain
+                no-repeat;
+            @include xl {
+                background: url("../img/torch-left.gif") center center / contain
+                    no-repeat;
+            }
+            width: 150px;
+            height: 130%;
+            display: block;
+            z-index: 999;
+            right: -50px;
+            pointer-events: none;
+            top: -15%;
+        }
+        &:before {
+            content: "";
+            position: absolute;
+            background: url("../img/torch-left.gif") center center / contain
+                no-repeat;
+            @include xl {
+                background: url("../img/torch-right.gif") center center /
+                    contain no-repeat;
+            }
+            width: 150px;
+            height: 130%;
+            display: block;
+            z-index: 999;
+            left: -50px;
+            pointer-events: none;
+            top: -15%;
+        }
+        &--inner {
+            margin: auto;
+            height: $cardMenuHeight;
+            display: grid;
+            grid-template-columns: 2fr 1fr 2fr 2fr;
+            line-height: $cardMenuHeight;
+            @include xl {
+                height: $cardMenuHeight * 2;
+                grid-template-columns: 1fr 3fr 2fr;
+                grid-template-rows: 1fr 1fr;
+                grid-template-areas:
+                    "VS vs1 start"
+                    "VS vs2 start";
+                position: relative;
+                background: shade($color--cards, 60%);
+                border-radius: 1rem;
+                padding: 0 3rem;
+            }
+            @include lg {
+                grid-template-columns: 1fr auto 1fr;
+                grid-template-areas: "vs1 VS vs2 start";
+            }
+            @include sm {
+                height: $cardMenuHeight * 2;
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+                padding: 0 4vw;
+                grid-template-areas:
+                    "vs1"
+                    "vs2";
+            }
+        }
+    }
+    &__vs {
+        color: tint($color--cards, 80%);
+        font-weight: bold;
+        &--1,
+        &--2 {
+            @include displayType();
+            @include md {
+                & span {
+                    position: relative;
+                    top: -0.6rem;
+                }
+            }
+            @include sm {
+                text-align: left;
+                & span {
+                    position: relative;
+                    top: 0;
+                }
+            }
+            &:before,
+            &:after {
+                z-index: 999;
+                pointer-events: none;
+                @include housesType();
+                padding-right: 0.5rem;
+                font-size: 2rem;
+                position: relative;
+                top: 0.5rem;
+                font-weight: normal;
+                @include xl {
+                    top: 1.5rem;
+                }
+                @include md {
+                    top: 0;
+                }
+                @include sm {
+                    top: 2rem;
+                }
+            }
+        }
+        &--1 {
+            grid-area: vs1;
+            @include xl {
+                border-bottom: 1px dotted tint($color--cards, 40%);
+                &:before {
+                    display: inline-block;
+                    position: absolute;
+                    left: 20%;
+                    font-size: 3rem;
+                    bottom: 20%;
+                }
+            }
+            @include sm {
+                border-bottom: none;
+                text-align: center;
+                &:before {
+                    display: inline-block;
+                    position: absolute;
+                    left: 20%;
+                    font-size: 3rem;
+                    bottom: 20%;
+                }
+            }
+        }
+        &--text {
+            grid-area: VS;
+            @include displayType();
+            color: tint($color--cards, 70%);
+            @include xl {
+                line-height: $cardMenuHeight * 2;
+            }
+            @include sm {
+                position: relative;
+                text-align: center;
+                margin: auto;
+                grid-column: 1 / span 1;
+                grid-row: 1 / span 3;
+                height: 100%;
+                pointer-events: none;
+                padding-top: 4vh;
+                &:before,
+                &:after {
+                    background-color: tint($color--cards, 70%);
+                    content: "";
+                    display: inline-block;
+                    height: 1px;
+                    position: relative;
+                    vertical-align: middle;
+                    width: 50%;
+                }
+                &:before {
+                    right: 0.5em;
+                    margin-left: -50%;
+                }
+
+                &:after {
+                    left: 0.5em;
+                    margin-right: -50%;
+                }
+            }
+        }
+        &--2 {
+            grid-area: vs2;
+            &:after {
+                -webkit-transform: scaleX(-1);
+                transform: scaleX(-1);
+                display: inline-block;
+            }
+            @include xl {
+                text-align: center;
+                &:after {
+                    position: absolute;
+                    right: 35%;
+                    font-size: 3rem;
+                    bottom: 20%;
+                }
+            }
+            @include sm {
+                text-align: center;
+                &:after {
+                    position: absolute;
+                    right: 20%;
+                    font-size: 3rem;
+                    bottom: 20%;
+                }
+            }
+        }
+    }
+    &__start {
+        @include transition(all 0.2s ease);
+        @include timing();
+        text-decoration: none;
+        color: tint($color--cards, 70%);
+        background: url("../img/ui/bricks.jpg") center center / 15% repeat;
+        display: inline-block;
+        border-radius: 1rem;
+        filter: brightness(100%);
+        grid-area: start;
+        font-weight: bold;
+        height: $cardMenuHeight / 1.3;
+        line-height: $cardMenuHeight / 1.3;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%) scale(0.9);
+        width: 80%;
+        @include lg {
+            height: $cardMenuHeight;
+            line-height: $cardMenuHeight;
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        @include md {
+            height: $cardMenuHeight;
+            line-height: $cardMenuHeight;
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        &:hover {
+            @include transition(all 0.2s ease);
+            @include timing();
+            filter: brightness(130%);
+            background-position: center center;
+        }
+        &--bothselected {
+            background: black;
+            overflow: hidden;
+            @include animation(focus 2s ease infinite);
+            &:hover {
+                background-size: 200%;
+            }
+            & span {
+                z-index: 1;
+            }
+            &:before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: -1;
+                height: 100%;
+            }
+            &:after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                z-index: -1;
+                height: 100%;
+            }
+        }
+        @include lg {
+            &--bothselected {
+                @include animation(
+                    focus 2s ease infinite,
+                    revealFade 1s ease 0.3s 1 forwards
+                );
+                width: 60%;
+                pointer-events: all;
+            }
+        }
+        @include keyframes(revealFade) {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        @include keyframes(focus) {
+            0% {
+                transform: translateY(-50%) translateX(-50%) scale(0.9);
+            }
+            50% {
+                transform: translateY(-50%) translateX(-50%) scale(1);
+            }
+            100% {
+                transform: translateY(-50%) translateX(-50%) scale(0.9);
+            }
+        }
+        &:hover {
+            transform: translateY(-50%) translateX(-50%) scale(1);
+        }
+        &:active {
+            transform: translateY(-50%) translateX(-50%) scale(0.9);
+        }
+    }
+}
+.p1,
+.p2 {
+    input[type="radio"] {
+        position: fixed;
+        opacity: 0;
+    }
+    &__radio:checked + label {
+        & .card {
+            @include transition(all 0.3s ease);
+            @include timing();
+            transform: scale(1.05);
+            &:before {
+                @include housesType();
+                line-height: 1;
+                font-size: 2.5rem;
+                position: absolute;
+                display: grid;
+                text-align: right;
+                font-weight: normal;
+                top: 1rem;
+                right: 1rem;
+                color: transparent;
+            }
+        }
+    }
+    &__slider {
+        transform: scale(0.8);
+        @include transition(all 0.3s ease);
+        &:hover,
+        &:hover input[type="radio"] + label {
+            cursor: pointer;
+        }
+        @include sm {
+            transform: scale(1);
+        }
+        &--active {
+            &:hover input[type="radio"] + label {
+                cursor: grabbing;
+                cursor: -moz-grabbing;
+                cursor: -webkit-grabbing;
+            }
+            left: 0;
+            background: rgba(shade($color--cards, 90%), 0.6);
+            transform: scale(1);
+            @include sm {
+                transform: scale(1);
+            }
+            cursor: grabbing;
+            cursor: -moz-grabbing;
+            cursor: -webkit-grabbing;
+        }
+    }
+}
+.p1 {
+    &__radio:checked + label {
+    }
+    &__card {
+    }
+}
+.p2 {
+    &__radio:checked + label {
+        & .card {
+            &:before {
+                -webkit-transform: scaleX(-1);
+                transform: scaleX(-1);
+            }
+        }
+    }
+    &__card {
+    }
+}
+.card {
+    width: auto;
+    width: 270px;
+    white-space: normal;
+    @include transition(all 0.3s ease);
+    @include timing();
+    height: $cardHeight;
+    display: inline-block;
+    cursor: inherit;
+    margin: $cardMargin $cardSpacing;
+    border-radius: 1rem;
+    padding: 1rem;
+    overflow: scroll;
+    border: 0.05rem solid tint($color--cards, 30%);
+    & p:not(&__name) {
+        display: block;
+        width: 100%;
+        display: grid;
+        grid-template-columns: min-content auto;
+        margin: 0.5rem 0;
+    }
+    & [data-type="label"] {
+        background: shade($color--cards, 80%);
+        color: $color--cards;
+        padding: 0.1rem 0.3rem;
+        display: inline-block;
+        font-weight: bold;
+    }
+    & [data-type="info"] {
+        border-bottom: 0.05rem dotted shade($color--cards, 10%);
+        color: tint($color--cards, 60%);
+        padding: 0.1rem 0.3rem;
+        display: inline-block;
+    }
+    &__name {
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: left;
+        margin: 0 0 0.8rem 0;
+        @include displayType();
+        font-size: 0.8rem;
+        color: tint($color--cards, 40%);
+    }
+    &__gender {
+    }
+}
