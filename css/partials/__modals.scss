@@ -294,7 +294,7 @@
     }
     &__scroller {
         max-height: 400px;
-        overflow-y: scroll;
+        overflow-y: auto;
         overflow-x: hidden;
         background: #68573e;
         text-align: center;
@@ -319,7 +319,7 @@
         }
         & .btn {
             @include sm {
-                border-color: rgba(tint($color--cards, 60%),.6);
+                border-color: rgba(tint($color--cards, 60%), 0.6);
             }
         }
         & .btn--close {
